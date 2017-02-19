@@ -1,0 +1,140 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<!-- Mobile fix -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- Google fonts -->
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.10/css/weather-icons.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.10/css/weather-icons-wind.min.css">
+		<link rel="stylesheet" href="css/main.css">
+		<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+		<script src="js/main.js"></script>
+	</head>
+	<body>
+		<h1 class="app-title">Local Weather App</h1>
+		<div class="app-window">
+			<div class="weather-now">
+				<div class="location-date">
+					<div class="date"></div>
+					<div class="location"></div>
+				</div>
+				<div class="temperature-conditions">
+					<div class="temperature">
+						<i class="wi wi-thermometer"></i>
+						<span class="temperature-value"></span><i class="wi wi-celsius"></i>
+						<div class="humidity">
+							<i class="wi wi-humidity"></i>
+							<span id="humidity"></span><span id="humidity-units">%</span>
+						</div>
+						<div class="wind">
+							<i id="wind-direction"></i>
+							<span id="wind"></span> <span id="wind-units">m/s</span>
+						</div>
+					</div>
+					<div class="conditions">
+						<div class="conditions-icon">
+							<i id="weather-icon"></i>
+						</div>
+						<div class="conditions-text"><!--thunderstorm with heavy drizzle--></div>
+					</div>
+				</div>
+			</div>
+			<div class="weather-forecast">
+				<div class="forecast-day">
+					<div class="forecast-date"></div>
+					<div class="forecast-conditions">
+						<i class="forecast-icon"></i>
+					</div>
+					<div class="forecast-temperature"></div>
+					<div class="forecast-chart">
+						<div class="forecast-chart-top">
+							<div class="forecast-chart-bar"></div>
+						</div>
+						<div class="chart-axis axis-first"></div>
+						<div class="forecast-chart-bottom">
+							<div class="forecast-chart-bar"></div>
+						</div>
+					</div>
+				</div>
+				<div class="forecast-day">
+					<div class="forecast-date"></div>
+					<div class="forecast-conditions">
+						<i class="forecast-icon"></i>
+					</div>
+					<div class="forecast-temperature"></div>
+					<div class="forecast-chart">
+						<div class="forecast-chart-top">
+							<div class="forecast-chart-bar"></div>
+						</div>
+						<div class="chart-axis"></div>
+						<div class="forecast-chart-bottom">
+							<div class="forecast-chart-bar"></div>
+						</div>
+					</div>
+				</div>
+				<div class="forecast-day">
+					<div class="forecast-date"></div>
+					<div class="forecast-conditions">
+						<i class="forecast-icon"></i>
+					</div>
+					<div class="forecast-temperature"></div>
+					<div class="forecast-chart">
+						<div class="forecast-chart-top">
+							<div class="forecast-chart-bar"></div>
+						</div>
+						<div class="chart-axis"></div>
+						<div class="forecast-chart-bottom">
+							<div class="forecast-chart-bar"></div>
+						</div>
+					</div>
+				</div>
+				<div class="forecast-day">
+					<div class="forecast-date"></div>
+					<div class="forecast-conditions">
+						<i class="forecast-icon"></i>
+					</div>
+					<div class="forecast-temperature"></div>
+					<div class="forecast-chart">
+						<div class="forecast-chart-top">
+							<div class="forecast-chart-bar"></div>
+						</div>
+						<div class="chart-axis"></div>
+						<div class="forecast-chart-bottom">
+							<div class="forecast-chart-bar"></div>
+						</div>
+					</div>
+				</div>
+				<div class="forecast-day">
+					<div class="forecast-date"></div>
+					<div class="forecast-conditions">
+						<i class="forecast-icon"></i>
+					</div>
+					<div class="forecast-temperature"></div>
+					<div class="forecast-chart">
+						<div class="forecast-chart-top">
+							<div class="forecast-chart-bar"></div>
+						</div>
+						<div class="chart-axis axis-last"></div>
+						<div class="forecast-chart-bottom">
+							<div class="forecast-chart-bar"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="credits">
+				February 2017 by Denis Z.
+			</div>
+		</div>
+	</body>
+</html>
+<!--
+TODO: not working with http, read this: https://developers.google.com/maps/documentation/geolocation/intro
+http://stackoverflow.com/questions/32106849/getcurrentposition-and-watchposition-are-deprecated-on-insecure-origins
+
+https://openweathermap.org/current#geo
+http://stackoverflow.com/questions/32106849/getcurrentposition-and-watchposition-are-deprecated-on-insecure-origins
+https://developers.google.com/maps/documentation/geolocation/intro
+https://weather.com
+-->

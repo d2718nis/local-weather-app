@@ -1,0 +1,166 @@
+html, 
+body {
+	background-color: #fff;
+	text-align: center;
+	color: #fff;
+	width: 100%;
+	margin: 0px;
+	font-family: "Open Sans", sans-serif;
+	font-weight: normal !important;
+}
+p {
+	font-size: 20px;
+}
+.app-title {
+	cursor: default;
+	color: #230029;
+}
+/* ======== Weather app ======== */
+.app-window {
+	background-color: #3C1642;
+	display: inline-block;
+	margin: auto;
+	min-width: 350px;
+	box-shadow: 0px 0px 20px 1px #666;
+	border-radius: 2px;
+}
+.weather-now {
+	min-height: 200px;
+	padding: 5px;
+}
+.location-date {
+	width: 100%;
+	min-height: 40px;
+}
+.date {
+	text-transform: uppercase;
+}
+.location {
+	font-size: 24px;
+	text-transform: uppercase;
+}
+.temperature-conditions {
+	width: 100%;
+	min-height: 160px;
+	font-size: 52px;
+}
+.temperature {
+	width: 55%;
+	min-height: 100px;
+	float: left;
+	margin-top: 30px;
+	margin-left: 5%;
+	text-align: left;
+}
+.conditions {
+	width: 40%;
+	min-height: 100px;
+	float: left;
+	margin-top: 30px;
+}
+.conditions-text {
+	font-size: 16px;
+	text-transform: capitalize;
+	margin-top: 20px;
+}
+.humidity, 
+.wind {
+	font-size: 16px;
+	margin-top: 3px;
+	margin-left: 8px;
+	text-align: left;
+}
+.humidity > i, 
+.wind > i {
+	margin-right: 5px;
+}
+/* ======== Forecast styles ======== */
+.weather-forecast {
+	min-height: 200px;
+	color: #230029;
+}
+.forecast-day {
+	width: 20%;
+	height: 200px;
+	display: inline-block;
+	float: left;
+}
+.forecast-day:nth-child(1) {
+	background-color: #BF3100;
+}
+.forecast-day:nth-child(2) {
+	background-color: #FF4E00;
+}
+.forecast-day:nth-child(3) {
+	background-color: #EC9F05;
+}
+.forecast-day:nth-child(4) {
+	background-color: #8EA604;
+}
+.forecast-day:nth-child(5) {
+	background-color: #086375;
+}
+.forecast-date {
+	width: 100%;
+	height: 15%;
+	margin-top: 5%;
+	text-transform: uppercase;
+}
+.forecast-conditions {
+	width: 100%;
+	height: 20%;
+	margin-top: 5%;
+	font-size: 24px;
+}
+.forecast-temperature {
+	width: 100%;
+	height: 20%;
+	font-size: 20px;
+}
+.forecast-chart {
+	width: 100%;
+	height: 30%;
+	margin-bottom: 5%;
+}
+.forecast-chart-top {
+	width: 100%;
+	height: 49%;
+	position: relative;
+}
+.chart-axis {
+	height: 2px;
+	width: 100%;
+	background-color: #230029;
+}
+.axis-first {
+	width: 95%;
+	float: right;
+}
+.axis-last {
+	width: 95%;
+}
+.forecast-chart-bottom {
+	width: 100%;
+	height: 49%;
+	position: relative;
+}
+.forecast-chart-top .forecast-chart-bar {
+	bottom: 0;
+}
+.forecast-chart-bottom .forecast-chart-bar {
+	top: 0;
+}
+.forecast-chart-bar {
+	width: 20%;
+	margin: auto;
+	position: absolute;
+	left: 0;
+	right: 0;
+	background-color: #230029;
+}
+/* ======== Credits styles ======== */
+.credits {
+	font-size: 12px;
+	color: #87618d;
+	margin: 2px;
+}
