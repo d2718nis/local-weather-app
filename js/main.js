@@ -180,7 +180,11 @@ function displayLocalTime() {
 		$(".date").text(day + ", " + now.getDate() + " " + month);
 		// Forecast date for 5 days
 		$(".forecast-date").each(function(index) {
-			$(this).text(days[now.getDay() + index + 1].slice(0, 3));
+			// +1 for the day after that (tomorrow and so forth)
+			var dayIndex = now.getDay() + index + 1;
+			// if dayIndex out of days array, go to the beginning
+			dayIndex = dayIndex >= days.length ? dayIndex - days.length : dayIndex;
+			$(this).text(days[dayIndex].slice(0, 3));
 		});
 		// TODO: autoupdate maybe?
 		//var t = setTimeout(startClock, 500);
