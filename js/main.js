@@ -3,7 +3,8 @@
 function displayForecast(json) {
 	//displayLocalTime();
 	displayForecastIcon(json.list, $(".forecast-icon"));
-	displayForecastTemperature(json.list, $(".forecast-temperature"));
+	displayForecastTemperature(json.list, $(".celsius-forecast > .forecast-temperature"), 
+		$(".fahrenheit-forecast > .forecast-temperature"));
 }
 // Display forecast icons
 function displayForecastIcon(jsonList, iconElements) {
@@ -30,20 +31,24 @@ function displayForecastIcon(jsonList, iconElements) {
 	});
 }
 // Display current Forecast temperature
-function displayForecastTemperature(jsonList, temperatureElements) {
-	var temperature;
+function displayForecastTemperature(jsonList, tempCelsElements, tempFahrElements) {
+	var temperatureCels;
+	var temperatureFahr;
 	var tempMin = 10000;
 	var tempMax = -275;
 	var scale;
 	// Display forecast temperature
 	jsonList.forEach(function(item, index) {
 		if (index > 0) {
-			temperature = Math.round(item.temp.day - 273.15);
-			tempMin = temperature < tempMin ? temperature : tempMin;
-			tempMax = temperature > tempMax ? temperature : tempMax;
-			temperature = temperature > 0 ? "+" + temperature : temperature;
-			temperatureElements.eq(index - 1).text(temperature);
-			// TODO: display chart bars
+			temperatureCels = Math.round(item.temp.day - 273.15);
+			temperatureFahr = Math.round(convertCelsToFahr(temperatureCels));
+			tempMin = temperatureCels < tempMin ? temperatureCels : tempMin;
+			tempMax = temperatureCels > tempMax ? temperatureCels : tempMax;
+			temperatureCels = temperatureCels > 0 ? "+" + temperatureCels : temperatureCels;
+			temperatureFahr = temperatureFahr > 0 ? "+" + temperatureFahr : temperatureFahr;
+			// Dirty hack for the celsius
+			tempCelsElements.eq(index - 1).text(temperatureCels);
+			tempFahrElements.eq(index - 1).text(temperatureFahr);
 		}
 	});
 	// .height() / Math.abs() = Infinity for some reason
@@ -53,21 +58,20 @@ function displayForecastTemperature(jsonList, temperatureElements) {
 	// Display forecast chart bars
 	jsonList.forEach(function(item, index) {
 		if (index > 0) {
-			temperature = Math.round(item.temp.day - 273.15);
-			console.log(temperature);
+			temperatureCels = Math.round(item.temp.day - 273.15);
 			// TODO: fix this
-			if (temperature > 0) {
+			if (temperatureCels > 0) {
 				// .forecast-chart-top:nth > .forecast-chart-bar
 				$(".forecast-chart-bar").each(function(barIndex, barItem) {
 					if (Math.floor(barIndex / 2) == index - 1 && $(this).parent().hasClass("forecast-chart-top")) {
-						$(this).height(Math.floor(Math.abs(temperature) * scale));
+						$(this).height(Math.floor(Math.abs(temperatureCels) * scale));
 					}
 				});
-			} else if (temperature < 0) {
+			} else if (temperatureCels < 0) {
 				// .forecast-chart-bottom:nth > .forecast-chart-bar
 				$(".forecast-chart-bar").each(function(barIndex, barItem) {
 					if (Math.floor(barIndex / 2) == index - 1 && $(this).parent().hasClass("forecast-chart-bottom")) {
-						$(this).height(Math.floor(Math.abs(temperature) * scale));
+						$(this).height(Math.floor(Math.abs(temperatureCels) * scale));
 					}
 				});
 			}
@@ -125,13 +129,18 @@ function displayWeatherIcon(iconId, sunriseTime, sunsetTime, iconElement, labelE
 }
 // Display current Weather temperature
 function displayWeatherTemperature(temperature) {
-	var temperature = Math.round(temperature - 273.15);
-	temperature = temperature > 0 ? "+" + temperature : temperature;
-	$(".temperature-value").text(temperature);
+	var temperatureCels = Math.round(temperature - 273.15);
+	var temperatureFahr = Math.round(convertCelsToFahr(temperatureCels));
+	temperatureCels = temperatureCels > 0 ? "+" + temperatureCels : temperatureCels;
+	temperatureFahr = temperatureFahr > 0 ? "+" + temperatureFahr : temperatureFahr;
+	$(".celsius-weather > .temperature-value").text(temperatureCels);
+	$(".fahrenheit-weather > .temperature-value").text(temperatureFahr);
 }
 // Display current wind speed and wind degree
 function displayWind(windSpeed, windDegree) {
-	$("#wind").text(windSpeed);
+	var windSpeedMph = Math.round(windSpeed / 0.44704 * 100) / 100;
+	$(".metric-wind > .wind-value").text(windSpeed);
+	$(".imperial-wind > .wind-value").text(windSpeedMph);
 	$("#wind-direction").removeClass();
 	$("#wind-direction").addClass("wi wi-wind from-" + Math.round(windDegree) + "-deg");
 }
@@ -176,10 +185,17 @@ function displayLocalTime() {
 		// TODO: autoupdate maybe?
 		//var t = setTimeout(startClock, 500);
 }
-
+// Celcius to Fahrenheits
+function convertCelsToFahr(tempCels) {
+	return tempCels * 1.8 + 32;
+}
+// Random 0-255 for ip purposes
 function rand256() {
 	return Math.floor(Math.random() * 256);
 }
+
+
+
 
 $(document).ready(function() {
 	// Testing purposes
@@ -214,6 +230,23 @@ $(document).ready(function() {
 	});
 	getIP.catch(function(err) {
 		alert("IPinfo: " + JSON.stringify(err));
+	});
+
+	$(".celsius-switch").on("click", function() {
+		if (!$(this).hasClass("units-switch-active")) {
+			$(".fahrenheit-switch").removeClass("units-switch-active");
+			$(this).addClass("units-switch-active");
+			$(".fahrenheit-weather, .fahrenheit-forecast, .imperial-wind").css("display", "none");
+			$(".celsius-weather, .celsius-forecast, .metric-wind").css("display", "inline");
+		}
+	});
+	$(".fahrenheit-switch").on("click", function() {
+		if (!$(this).hasClass("units-switch-active")) {
+			$(".celsius-switch").removeClass("units-switch-active");
+			$(this).addClass("units-switch-active");
+			$(".celsius-weather, .celsius-forecast, .metric-wind").css("display", "none");
+			$(".fahrenheit-weather, .fahrenheit-forecast, .imperial-wind").css("display", "inline");
+		}
 	});
 
 	// Easter egg

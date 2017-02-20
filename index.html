@@ -9,7 +9,7 @@
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.10/css/weather-icons-wind.min.css">
 		<link rel="stylesheet" href="css/main.css">
 		<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+		<!-- <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script> -->
 		<script src="js/main.js"></script>
 	</head>
 	<body>
@@ -23,14 +23,24 @@
 				<div class="temperature-conditions">
 					<div class="temperature">
 						<i class="wi wi-thermometer"></i>
-						<span class="temperature-value"></span><i class="wi wi-celsius"></i>
+						<span class="celsius-weather">
+							<span class="temperature-value"></span><i class="wi wi-celsius"></i>
+						</span>
+						<span class="fahrenheit-weather">
+							<span class="temperature-value"></span><i class="wi wi-fahrenheit"></i>
+						</span>
 						<div class="humidity">
 							<i class="wi wi-humidity"></i>
 							<span id="humidity"></span><span id="humidity-units">%</span>
 						</div>
 						<div class="wind">
 							<i id="wind-direction"></i>
-							<span id="wind"></span> <span id="wind-units">m/s</span>
+							<span class="metric-wind">
+								<span class="wind-value"></span> <span id="wind-units">m/s</span>
+							</span>
+							<span class="imperial-wind">
+								<span class="wind-value"></span> <span id="wind-units">mph</span>
+							</span>
 						</div>
 					</div>
 					<div class="conditions">
@@ -41,13 +51,22 @@
 					</div>
 				</div>
 			</div>
+			<div class="units-switch">
+				<div class="celsius-switch units-switch-active">Celsius</div>
+				<div class="fahrenheit-switch">Fahrenheit</div>
+			</div>
 			<div class="weather-forecast">
 				<div class="forecast-day">
 					<div class="forecast-date"></div>
 					<div class="forecast-conditions">
 						<i class="forecast-icon"></i>
 					</div>
-					<div class="forecast-temperature"></div>
+					<div class="celsius-forecast">
+						<div class="forecast-temperature"></div>
+					</div>
+					<div class="fahrenheit-forecast">
+						<div class="forecast-temperature"></div>
+					</div>
 					<div class="forecast-chart">
 						<div class="forecast-chart-top">
 							<div class="forecast-chart-bar"></div>
@@ -63,7 +82,12 @@
 					<div class="forecast-conditions">
 						<i class="forecast-icon"></i>
 					</div>
-					<div class="forecast-temperature"></div>
+					<div class="celsius-forecast">
+						<div class="forecast-temperature"></div>
+					</div>
+					<div class="fahrenheit-forecast">
+						<div class="forecast-temperature"></div>
+					</div>
 					<div class="forecast-chart">
 						<div class="forecast-chart-top">
 							<div class="forecast-chart-bar"></div>
@@ -79,7 +103,12 @@
 					<div class="forecast-conditions">
 						<i class="forecast-icon"></i>
 					</div>
-					<div class="forecast-temperature"></div>
+					<div class="celsius-forecast">
+						<div class="forecast-temperature"></div>
+					</div>
+					<div class="fahrenheit-forecast">
+						<div class="forecast-temperature"></div>
+					</div>
 					<div class="forecast-chart">
 						<div class="forecast-chart-top">
 							<div class="forecast-chart-bar"></div>
@@ -95,7 +124,12 @@
 					<div class="forecast-conditions">
 						<i class="forecast-icon"></i>
 					</div>
-					<div class="forecast-temperature"></div>
+					<div class="celsius-forecast">
+						<div class="forecast-temperature"></div>
+					</div>
+					<div class="fahrenheit-forecast">
+						<div class="forecast-temperature"></div>
+					</div>
 					<div class="forecast-chart">
 						<div class="forecast-chart-top">
 							<div class="forecast-chart-bar"></div>
@@ -111,7 +145,12 @@
 					<div class="forecast-conditions">
 						<i class="forecast-icon"></i>
 					</div>
-					<div class="forecast-temperature"></div>
+					<div class="celsius-forecast">
+						<div class="forecast-temperature"></div>
+					</div>
+					<div class="fahrenheit-forecast">
+						<div class="forecast-temperature"></div>
+					</div>
 					<div class="forecast-chart">
 						<div class="forecast-chart-top">
 							<div class="forecast-chart-bar"></div>

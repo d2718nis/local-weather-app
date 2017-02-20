@@ -16,6 +16,24 @@ p {
 	color: #230029;
 	margin: 20px;
 }
+.celcius-weather {
+
+}
+.fahrenheit-weather {
+	display: none;
+}
+.metric-wind {
+
+}
+.imperial-wind {
+	display: none;
+}
+.celcius-forecacst {
+
+}
+.fahrenheit-forecast {
+	display: none;
+}
 /* ======== Weather app ======== */
 .app-window {
 	background-color: #3C1642;
@@ -46,7 +64,7 @@ p {
 	font-size: 52px;
 }
 .temperature {
-	width: 55%;
+	width: 58%;
 	min-height: 100px;
 	float: left;
 	margin-top: 30px;
@@ -54,7 +72,7 @@ p {
 	text-align: left;
 }
 .conditions {
-	width: 40%;
+	width: 37%;
 	min-height: 100px;
 	float: left;
 	margin-top: 30px;
@@ -74,6 +92,26 @@ p {
 .humidity > i, 
 .wind > i {
 	margin-right: 5px;
+}
+/* ======== Units switch styles ======== */
+.units-switch {
+	text-transform: uppercase;
+	border-top: 1px solid #78527e;
+	cursor: default;
+}
+.celsius-switch, 
+.fahrenheit-switch {
+	color: #78527e;
+	background-color: #3C1642;
+	width: 50%;
+	display: inline-block;
+	float: left;
+	-webkit-transition: color 0.5s, background-color 0.5s; /* Safari */
+    transition: color 0.5s, background-color 0.5s;
+}
+.units-switch-active {
+	color: #3C1642;
+	background-color: #78527e;
 }
 /* ======== Forecast styles ======== */
 .weather-forecast {
