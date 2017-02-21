@@ -191,11 +191,14 @@ p {
 }
 .forecast-chart-bar {
 	width: 20%;
+	height: 0px;
 	margin: auto;
 	position: absolute;
 	left: 0;
 	right: 0;
 	background-color: #230029;
+	-webkit-transition: height 1s;
+	transition: height 1s;
 }
 /* ======== Credits styles ======== */
 .credits {
