@@ -241,7 +241,7 @@ $(document).ready(function() {
 			$(".fahrenheit-switch").removeClass("units-switch-active");
 			$(this).addClass("units-switch-active");
 			$(".fahrenheit-weather, .fahrenheit-forecast, .imperial-wind").css("display", "none");
-			$(".celsius-weather, .celsius-forecast, .metric-wind").css("display", "inline");
+			$(".celsius-weather, .celsius-forecast, .metric-wind").css("display", "inline-block");
 		}
 	});
 	$(".fahrenheit-switch").on("click", function() {
@@ -249,7 +249,7 @@ $(document).ready(function() {
 			$(".celsius-switch").removeClass("units-switch-active");
 			$(this).addClass("units-switch-active");
 			$(".celsius-weather, .celsius-forecast, .metric-wind").css("display", "none");
-			$(".fahrenheit-weather, .fahrenheit-forecast, .imperial-wind").css("display", "inline");
+			$(".fahrenheit-weather, .fahrenheit-forecast, .imperial-wind").css("display", "inline-block");
 		}
 	});
 
