@@ -193,48 +193,84 @@ function displayLocalTime() {
 function convertCelsToFahr(tempCels) {
 	return tempCels * 1.8 + 32;
 }
+
+
+
+// ========== Testing ==========
 // Random 0-255 for ip purposes
 function rand256() {
 	return Math.floor(Math.random() * 256);
 }
+// ========== Testing ==========
 
 
 
-
-$(document).ready(function() {
-	// Testing purposes
-	var randomIp = rand256() + "." + rand256() + "." + rand256() + "." + rand256();
-
+// ========== API requests ==========
+// Weather API request
+function requestWeather(lat, lon) {
+	// freecodecamp's openweathermap.org API kery used here
+	var getWeatherInfo = $.getJSON("https://jsonp.afeld.me/?callback=&url=\
+		http%3A%2F%2Fapi.openweathermap.org%2Fdata%2F2.5%2Fweather%3Flat%3D" 
+		+ lat + "%26lon%3D" + lon + "%26appid%3D061f24cf3cde2f60644a8240302983f2");
+	getWeatherInfo.then(function(weatherData) {
+		displayWeather(weatherData);
+	});
+	getWeatherInfo.catch(function(err) {
+		alert("WeatherInfo: " + JSON.stringify(err));
+	});
+}
+// Forecast API request
+function requestForecast(lat, lon) {
+	// cnt=6 because API returns first value for today
+	var getForecastInfo = $.getJSON("https://jsonp.afeld.me/?callback=&url=\
+		http%3A%2F%2Fapi.openweathermap.org%2Fdata%2F2.5%2Fforecast%2Fdaily%3Flat%3D" 
+		+ lat + "%26lon%3D" + lon + "%26appid%3D061f24cf3cde2f60644a8240302983f2%26cnt=6");
+	getForecastInfo.then(function(forecastData) {
+		displayForecast(forecastData);
+	});
+	getForecastInfo.catch(function(err) {
+		alert("ForecastInfo: " + JSON.stringify(err));
+	});
+}
+// Try to retrieve position by ip address
+function requestByIp() {
+	// https://freegeoip.net/json/ json.latitude, json.longitude
+	// http://ip-api.com/json json.lat, json.lon
 	var getIP = $.getJSON("https://freegeoip.net/json/");
 	getIP.then(function(ipData) {
 		var lat = ipData.latitude;
 		var lon = ipData.longitude;
 		// Weather API request
-		// freecodecamp's openweathermap.org API kery used here
-		var getWeatherInfo = $.getJSON("https://jsonp.afeld.me/?callback=&url=\
-			http%3A%2F%2Fapi.openweathermap.org%2Fdata%2F2.5%2Fweather%3Flat%3D" 
-			+ lat + "%26lon%3D" + lon + "%26appid%3D061f24cf3cde2f60644a8240302983f2");
-		getWeatherInfo.then(function(weatherData) {
-			displayWeather(weatherData);
-		});
-		getWeatherInfo.catch(function(err) {
-			alert("WeatherInfo: " + JSON.stringify(err));
-		});
+		requestWeather(lat, lon);
 		// Forecast API request
-		// cnt=6 because API returns first value for today
-		var getForecastInfo = $.getJSON("https://jsonp.afeld.me/?callback=&url=\
-			http%3A%2F%2Fapi.openweathermap.org%2Fdata%2F2.5%2Fforecast%2Fdaily%3Flat%3D" 
-			+ lat + "%26lon%3D" + lon + "%26appid%3D061f24cf3cde2f60644a8240302983f2%26cnt=6");
-		getForecastInfo.then(function(forecastData) {
-			displayForecast(forecastData);
-		});
-		getForecastInfo.catch(function(err) {
-			alert("ForecastInfo: " + JSON.stringify(err));
-		});
+		requestForecast(lat, lon);
 	});
 	getIP.catch(function(err) {
 		alert("IPinfo: " + JSON.stringify(err));
 	});
+}
+// ========== API requests ==========
+
+
+$(document).ready(function() {
+	// Testing purposes
+	// var randomIp = rand256() + "." + rand256() + "." + rand256() + "." + rand256();
+
+	if (navigator.geolocation) {
+		getGeoLocation = navigator.geolocation.getCurrentPosition(function(pos) {
+			var lat = pos.coords.latitude;
+			var lon = pos.coords.longitude;
+			// Weather API request
+			requestWeather(lat, lon);
+			// Forecast API request
+			requestForecast(lat, lon);
+		}, 
+		function(err) {
+			requestByIp();
+		});
+	} else {
+		requestByIp();
+	}
 
 	$(".celsius-switch").on("click", function() {
 		if (!$(this).hasClass("units-switch-active")) {
