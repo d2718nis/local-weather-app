@@ -108,7 +108,7 @@ p {
 	width: 50%;
 	display: inline-block;
 	float: left;
-	-webkit-transition: color 0.5s, background-color 0.5s; /* Safari */
+	-webkit-transition: color 0.5s, background-color 0.5s;
     transition: color 0.5s, background-color 0.5s;
 }
 .units-switch-active {
@@ -207,4 +207,13 @@ p {
 	font-size: 12px;
 	color: #87618d;
 	margin: 2px;
+}
+.credits-link {
+	color: #87618d;
+	text-decoration: none;
+	-webkit-transition: color 0.5s;
+	transition: color 0.5s;
+}
+.credits-link:hover {
+	color: #c39dc9;
 }
