@@ -44,7 +44,7 @@ p {
 	border-radius: 2px;
 }
 .weather-now {
-	min-height: 200px;
+	min-height: 225px;
 	padding: 5px;
 }
 .location-date {
@@ -52,9 +52,11 @@ p {
 	min-height: 40px;
 }
 .date {
+	min-height: 22px;
 	text-transform: uppercase;
 }
 .location {
+	min-height: 33px;
 	font-size: 24px;
 	text-transform: uppercase;
 }
