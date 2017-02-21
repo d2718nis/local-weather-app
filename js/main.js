@@ -17,7 +17,8 @@ function displayForecastIcon(jsonList, iconElements) {
 				var icon = json[code].icon;
 				// Note: 7xx and 9xx do not get prefixed w/ day/night
 				if (!(code > 699 && code < 800) && !(code > 899 && code < 1000)) {
-					//var timeOfTheDay = calculateDayNightTime(sunriseTime, sunsetTime);
+					// Only day icons because this is a forecast
+					// var timeOfTheDay = calculateDayNightTime(sunriseTime, sunsetTime);
 					icon = "day-" + icon;
 				}
 				iconElements.eq(index - 1).removeClass();
@@ -46,12 +47,11 @@ function displayForecastTemperature(jsonList, tempCelsElements, tempFahrElements
 			tempMax = temperatureCels > tempMax ? temperatureCels : tempMax;
 			temperatureCels = temperatureCels > 0 ? "+" + temperatureCels : temperatureCels;
 			temperatureFahr = temperatureFahr > 0 ? "+" + temperatureFahr : temperatureFahr;
-			// Dirty hack for the celsius
+			// Write temperature values
 			tempCelsElements.eq(index - 1).text(temperatureCels);
 			tempFahrElements.eq(index - 1).text(temperatureFahr);
 		}
 	});
-	// .height() / Math.abs() = Infinity for some reason
 	var tempMinAbs = tempMin < 0 ? -tempMin : tempMin;
 	var tempMaxAbs = tempMax < 0 ? -tempMax : tempMax;
 	scale = calculateChartScale(tempMinAbs, tempMaxAbs, $(".forecast-chart-top"));
@@ -59,7 +59,6 @@ function displayForecastTemperature(jsonList, tempCelsElements, tempFahrElements
 	jsonList.forEach(function(item, index) {
 		if (index > 0) {
 			temperatureCels = Math.round(item.temp.day - 273.15);
-			// TODO: fix this
 			if (temperatureCels > 0) {
 				// .forecast-chart-top:nth > .forecast-chart-bar
 				$(".forecast-chart-bar").each(function(barIndex, barItem) {
@@ -100,7 +99,6 @@ function displayWeather(json) {
 	displayWeatherTemperature(json.main.temp);
 	displayWind(json.wind.speed, json.wind.deg);
 	displayHumidity(json.main.humidity);
-	//$(".weather-window").css("display", "inline-block");
 }
 // Display weather icon using https://erikflowers.github.io/weather-icons/
 function displayWeatherIcon(iconId, sunriseTime, sunsetTime, iconElement, labelElement) {
@@ -156,6 +154,7 @@ function displayHumidity(humidity) {
 
 
 
+// ========== Helpers ==========
 // Return "day" either "night" depending on time and sunrise/sunset
 function calculateDayNightTime(sunriseTime, sunsetTime) {
 	var now = new Date();
@@ -187,21 +186,13 @@ function displayLocalTime() {
 			$(this).text(days[dayIndex].slice(0, 3));
 		});
 		// TODO: autoupdate maybe?
-		//var t = setTimeout(startClock, 500);
+		// var t = setTimeout(startClock, 500);
 }
 // Celcius to Fahrenheits
 function convertCelsToFahr(tempCels) {
 	return tempCels * 1.8 + 32;
 }
-
-
-
-// ========== Testing ==========
-// Random 0-255 for ip purposes
-function rand256() {
-	return Math.floor(Math.random() * 256);
-}
-// ========== Testing ==========
+// ========== Helpers ==========
 
 
 
@@ -221,7 +212,8 @@ function requestWeather(lat, lon) {
 }
 // Forecast API request
 function requestForecast(lat, lon) {
-	// cnt=6 because API returns first value for today
+	// cnt=6 means today + 5 days ahead
+	// freecodecamp's openweathermap.org API kery used here
 	var getForecastInfo = $.getJSON("https://jsonp.afeld.me/?callback=&url=\
 		http%3A%2F%2Fapi.openweathermap.org%2Fdata%2F2.5%2Fforecast%2Fdaily%3Flat%3D" 
 		+ lat + "%26lon%3D" + lon + "%26appid%3D061f24cf3cde2f60644a8240302983f2%26cnt=6");
@@ -234,8 +226,8 @@ function requestForecast(lat, lon) {
 }
 // Try to retrieve position by ip address
 function requestByIp() {
-	// https://freegeoip.net/json/ json.latitude, json.longitude
-	// http://ip-api.com/json json.lat, json.lon
+	// https://freegeoip.net/json/ returns .latitude, .longitude
+	// http://ip-api.com/json returns .lat, .lon
 	var getIP = $.getJSON("https://freegeoip.net/json/");
 	getIP.then(function(ipData) {
 		var lat = ipData.latitude;
@@ -253,9 +245,6 @@ function requestByIp() {
 
 
 $(document).ready(function() {
-	// Testing purposes
-	// var randomIp = rand256() + "." + rand256() + "." + rand256() + "." + rand256();
-
 	if (navigator.geolocation) {
 		getGeoLocation = navigator.geolocation.getCurrentPosition(function(pos) {
 			var lat = pos.coords.latitude;
@@ -272,6 +261,7 @@ $(document).ready(function() {
 		requestByIp();
 	}
 
+	// Imperaial/metric switch logics
 	$(".celsius-switch").on("click", function() {
 		if (!$(this).hasClass("units-switch-active")) {
 			$(".fahrenheit-switch").removeClass("units-switch-active");
