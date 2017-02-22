@@ -5,7 +5,7 @@ body {
 	color: #fff;
 	width: 100%;
 	margin: 0;
-	font-family: "Open Sans", sans-serif;
+	font-family: 'Open Sans', sans-serif;
 }
 p {
 	font-size: 20px;
@@ -22,7 +22,7 @@ p {
 }
 /* ======== Weather app ======== */
 .app-window {
-	background-color: #3C1642;
+	background-color: #3c1642;
 	display: inline-block;
 	margin: auto;
 	min-width: 350px;
@@ -90,7 +90,7 @@ p {
 .celsius-switch, 
 .fahrenheit-switch {
 	color: #78527e;
-	background-color: #3C1642;
+	background-color: #3c1642;
 	width: 50%;
 	float: left;
 	-moz-transition: color 0.5s, background-color 0.5s;
@@ -113,16 +113,16 @@ p {
 	float: left;
 }
 .forecast-day:nth-child(1) {
-	background-color: #BF3100;
+	background-color: #bf3100;
 }
 .forecast-day:nth-child(2) {
-	background-color: #FF4E00;
+	background-color: #ff4e00;
 }
 .forecast-day:nth-child(3) {
-	background-color: #EC9F05;
+	background-color: #ec9f05;
 }
 .forecast-day:nth-child(4) {
-	background-color: #8EA604;
+	background-color: #8ea604;
 }
 .forecast-day:nth-child(5) {
 	background-color: #086375;
