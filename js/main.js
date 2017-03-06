@@ -64,9 +64,17 @@ function displayForecast(json) {
 function displayForecastIcon(jsonList, iconElements) {
 	jsonList.forEach(function(item, index) {
 		if (index > 0) {
+			let icon, label;
+			if (iconCodes['wi-forecast-io-' + item.icon]) {
+				icon = iconCodes['wi-forecast-io-' + item.icon].icon;
+				label = iconCodes['wi-forecast-io-' + item.icon].label;
+			} else {
+				icon = 'na';
+				label = item.icon.charAt(0).toUpperCase() + item.icon.slice(1).replace(/-/g, ' ');
+			}
 			iconElements.eq(index - 1).removeClass();
-			iconElements.eq(index - 1).addClass('forecast-icon wi wi-' + iconCodes['wi-forecast-io-' + item.icon].icon);
-			iconElements.eq(index - 1).attr('alt', iconCodes['wi-forecast-io-' + item.icon].label);
+			iconElements.eq(index - 1).addClass('forecast-icon wi wi-' + icon);
+			iconElements.eq(index - 1).attr('alt', label);
 		}
 	});
 }
@@ -140,11 +148,19 @@ function displayWeather(json, city) {
 }
 // Display weather icon using https://erikflowers.github.io/weather-icons/
 function displayWeatherIcon(iconId, sunriseTime, sunsetTime, iconElement, labelElement) {
+	let icon, label;
+	if (iconCodes['wi-forecast-io-' + iconId]) {
+		icon = iconCodes['wi-forecast-io-' + iconId].icon;
+		label = iconCodes['wi-forecast-io-' + iconId].label;
+	} else {
+		icon = 'na';
+		label = iconId.charAt(0).toUpperCase() + iconId.slice(1).replace(/-/g, ' ');
+	}
 	$(iconElement).removeClass();
-	$(iconElement).addClass('wi wi-' + iconCodes['wi-forecast-io-' + iconId].icon);
-	$(iconElement).attr('alt', iconCodes['wi-forecast-io-' + iconId].label);
+	$(iconElement).addClass('wi wi-' + icon);
+	$(iconElement).attr('alt', label);
 	if (labelElement != '')
-		$(labelElement).text(iconCodes['wi-forecast-io-' + iconId].label);
+		$(labelElement).text(label);
 }
 // Display current Weather temperature
 function displayWeatherTemperature(temperature) {
