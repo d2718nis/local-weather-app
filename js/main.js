@@ -1,34 +1,73 @@
+const iconCodes = {
+	'wi-forecast-io-clear-day': {
+		'icon': 'day-sunny',
+		'label': 'Sunny day'
+	},
+	'wi-forecast-io-clear-night': {
+		'icon': 'night-clear',
+		'label': 'Clear night'
+	},
+	'wi-forecast-io-cloudy': {
+		'icon': 'cloudy',
+		'label': 'Cloudy'
+	},
+	'wi-forecast-io-fog': {
+		'icon': 'fog',
+		'label': 'Fog'
+	},
+	'wi-forecast-io-hail': {
+		'icon': 'hail',
+		'label': 'Hail'
+	},
+	'wi-forecast-io-partly-cloudy-day': {
+		'icon': 'day-cloudy',
+		'label': 'Cloudy day'
+	},
+	'wi-forecast-io-partly-cloudy-night': {
+		'icon': 'night-cloudy',
+		'label': 'Cloudy night'
+	},
+	'wi-forecast-io-rain': {
+		'icon': 'rain',
+		'label': 'Rain'
+	},
+	'wi-forecast-io-sleet': {
+		'icon': 'sleet',
+		'label': 'Sleet'
+	},
+	'wi-forecast-io-snow': {
+		'icon': 'snow',
+		'label': 'Snow'
+	},
+	'wi-forecast-io-thunderstorm': {
+		'icon': 'thunderstorm',
+		'label': 'Thunderstorm'
+	},
+	'wi-forecast-io-tornado': {
+		'icon': 'tornado',
+		'label': 'Tornado'
+	},
+	'wi-forecast-io-wind': {
+		'icon': 'strong-wind',
+		'label': 'Strong wind'
+	}
+};
+
 // ========== Forecast Only ==========
 // Display forecast
 function displayForecast(json) {
 	//displayLocalTime();
-	displayForecastIcon(json.list, $('.forecast-icon'));
-	displayForecastTemperature(json.list, $('.celsius-forecast > .forecast-temperature'), 
-		$('.fahrenheit-forecast > .forecast-temperature'));
+	displayForecastIcon(json.daily.data, $('.forecast-icon'));
+	displayForecastTemperature(json.daily.data, $('.celsius-forecast > .forecast-temperature'), $('.fahrenheit-forecast > .forecast-temperature'));
 }
 // Display forecast icons
 function displayForecastIcon(jsonList, iconElements) {
-// TODO: do one JSON request instead of six here IMPORTANT
-	var getIconsInfo = $.getJSON('https://gist.githubusercontent.com/tbranyen/62d974681dea8ee0caa1/raw/3405bfb2a76b7cbd90fde33d8536f0cd13706955/icons.json');
-	getIconsInfo.then(function(json) {
-		jsonList.forEach(function(item, index) {
-			if (index > 0) {
-				var code = item.weather[0].id;
-				var icon = json[code].icon;
-				// Note: 7xx and 9xx do not get prefixed w/ day/night
-				if (!(code > 699 && code < 800) && !(code > 899 && code < 1000)) {
-					// Only day icons because this is a forecast
-					// var timeOfTheDay = calculateDayNightTime(sunriseTime, sunsetTime);
-					icon = 'day-' + icon;
-				}
-				iconElements.eq(index - 1).removeClass();
-				iconElements.eq(index - 1).addClass('forecast-icon wi wi-' + icon);
-				iconElements.eq(index - 1).attr('alt', json[code].label);
-			}
-		});
-	});
-	getIconsInfo.catch(function(err) {
-		alert('ForecastIconsInfo: ' + JSON.stringify(err));
+	jsonList.forEach(function(item, index) {
+		if (index > 0) {
+			iconElements.eq(index - 1).removeClass();
+			iconElements.eq(index - 1).addClass('forecast-icon wi wi-' + iconCodes['wi-forecast-io-' + item.icon].icon);
+			iconElements.eq(index - 1).attr('alt', iconCodes['wi-forecast-io-' + item.icon].label);
+		}
 	});
 }
 // Display current Forecast temperature
@@ -41,7 +80,7 @@ function displayForecastTemperature(jsonList, tempCelsElements, tempFahrElements
 	// Display forecast temperature
 	jsonList.forEach(function(item, index) {
 		if (index > 0) {
-			temperatureCels = Math.round(item.temp.day - 273.15);
+			temperatureCels = Math.round((item.temperatureMin + item.temperatureMax) / 2);
 			temperatureFahr = Math.round(convertCelsToFahr(temperatureCels));
 			tempMin = temperatureCels < tempMin ? temperatureCels : tempMin;
 			tempMax = temperatureCels > tempMax ? temperatureCels : tempMax;
@@ -58,7 +97,7 @@ function displayForecastTemperature(jsonList, tempCelsElements, tempFahrElements
 	// Display forecast chart bars
 	jsonList.forEach(function(item, index) {
 		if (index > 0) {
-			temperatureCels = Math.round(item.temp.day - 273.15);
+			temperatureCels = Math.round((item.temperatureMin + item.temperatureMax) / 2);
 			if (temperatureCels > 0) {
 				// .forecast-chart-top:nth > .forecast-chart-bar
 				$('.forecast-chart-bar').each(function(barIndex, barItem) {
@@ -91,43 +130,25 @@ function calculateChartScale(tempMinAbs, tempMaxAbs, elemForBarPlacement) {
 
 
 // ========== Weather Only ==========
-// Display weather
-function displayWeather(json) {
-	displayLocation(json.sys.country, json.name);
+function displayWeather(json, city) {
+	displayLocation('country', city);
 	displayLocalTime();
-	displayWeatherIcon(json.weather[0].id, json.sys.sunrise, json.sys.sunset, '#weather-icon', '.conditions-text');
-	displayWeatherTemperature(json.main.temp);
-	displayWind(json.wind.speed, json.wind.deg);
-	displayHumidity(json.main.humidity);
+	displayWeatherIcon(json.currently.icon, json.daily.data[0].sunriseTime, json.daily.data[0].sunsetTime, '#weather-icon', '.conditions-text');
+	displayWeatherTemperature(json.currently.temperature);
+	displayWind(json.currently.windSpeed, json.currently.windBearing);
+	displayHumidity(json.currently.humidity);
 }
 // Display weather icon using https://erikflowers.github.io/weather-icons/
 function displayWeatherIcon(iconId, sunriseTime, sunsetTime, iconElement, labelElement) {
-	// TODO: do one JSON request instead of six here IMPORTANT
-	var getIconsInfo = $.getJSON('https://gist.githubusercontent.com/tbranyen/62d974681dea8ee0caa1/raw/3405bfb2a76b7cbd90fde33d8536f0cd13706955/icons.json');
-	getIconsInfo.then(function(json) {
-		var code = iconId;
-		var icon = json[code].icon;
-		// Note: 7xx and 9xx do not get prefixed w/ day/night
-		if (!(code > 699 && code < 800) && !(code > 899 && code < 1000)) {
-			var timeOfTheDay = calculateDayNightTime(sunriseTime, sunsetTime);
-			if (timeOfTheDay == 'night' && icon == 'sunny') {
-				icon = 'clear';
-			}
-			icon = timeOfTheDay + '-' + icon;
-		}
-		$(iconElement).removeClass();
-		$(iconElement).addClass('wi wi-' + icon);
-		$(iconElement).attr('alt', json[code].label);
-		if (labelElement != '')
-			$(labelElement).text(json[code].label);
-	});
-	getIconsInfo.catch(function(err) {
-		alert('WeatherIconInfo: ' + JSON.stringify(err));
-	});
+	$(iconElement).removeClass();
+	$(iconElement).addClass('wi wi-' + iconCodes['wi-forecast-io-' + iconId].icon);
+	$(iconElement).attr('alt', iconCodes['wi-forecast-io-' + iconId].label);
+	if (labelElement != '')
+		$(labelElement).text(iconCodes['wi-forecast-io-' + iconId].label);
 }
 // Display current Weather temperature
 function displayWeatherTemperature(temperature) {
-	var temperatureCels = Math.round(temperature - 273.15);
+	var temperatureCels = Math.round(temperature);
 	var temperatureFahr = Math.round(convertCelsToFahr(temperatureCels));
 	temperatureCels = temperatureCels > 0 ? '+' + temperatureCels : temperatureCels;
 	temperatureFahr = temperatureFahr > 0 ? '+' + temperatureFahr : temperatureFahr;
@@ -197,31 +218,20 @@ function convertCelsToFahr(tempCels) {
 
 
 // ========== API requests ==========
-// Weather API request
-function requestWeather(lat, lon) {
-	// freecodecamp's openweathermap.org API kery used here
-	var getWeatherInfo = $.getJSON('https://jsonp.afeld.me/?callback=&url=\
-		http%3A%2F%2Fapi.openweathermap.org%2Fdata%2F2.5%2Fweather%3Flat%3D' 
-		+ lat + '%26lon%3D' + lon + '%26appid%3D061f24cf3cde2f60644a8240302983f2');
-	getWeatherInfo.then(function(weatherData) {
-		displayWeather(weatherData);
+const apiKeys = ['5cd469b839b56731a61e8d6090778380',
+	'12007aa00bea21e0c8f9c65e26dd8194',
+	'7fa872912245327ebd26b60bfebdc458',
+	'3b216c44c5be1bedc54d65a7f3414f6c'];
+// Forecast.io Weather API request
+function requestWeatherAndForecast(apiKey, lat, lon, city) {
+	var getWeatherInfo = $.getJSON(
+		`https://api.darksky.net/forecast/${apiKey}/${lat},${lon}?exclude=minutely,hourly,alerts,flags&units=si&callback=?`);
+	getWeatherInfo.then(function(data) {
+		displayWeather(data, city);
+		displayForecast(data);
 	});
 	getWeatherInfo.catch(function(err) {
 		alert('WeatherInfo: ' + JSON.stringify(err));
-	});
-}
-// Forecast API request
-function requestForecast(lat, lon) {
-	// cnt=6 means today + 5 days ahead
-	// freecodecamp's openweathermap.org API kery used here
-	var getForecastInfo = $.getJSON('https://jsonp.afeld.me/?callback=&url=\
-		http%3A%2F%2Fapi.openweathermap.org%2Fdata%2F2.5%2Fforecast%2Fdaily%3Flat%3D' 
-		+ lat + '%26lon%3D' + lon + '%26appid%3D061f24cf3cde2f60644a8240302983f2%26cnt=6');
-	getForecastInfo.then(function(forecastData) {
-		displayForecast(forecastData);
-	});
-	getForecastInfo.catch(function(err) {
-		alert('ForecastInfo: ' + JSON.stringify(err));
 	});
 }
 // Try to retrieve position by ip address
@@ -230,12 +240,8 @@ function requestByIp() {
 	// http://ip-api.com/json returns .lat, .lon
 	var getIP = $.getJSON('https://freegeoip.net/json/');
 	getIP.then(function(ipData) {
-		var lat = ipData.latitude;
-		var lon = ipData.longitude;
-		// Weather API request
-		requestWeather(lat, lon);
-		// Forecast API request
-		requestForecast(lat, lon);
+		// Weather and Forecast API request
+		requestWeatherAndForecast(apiKeys[0], ipData.latitude, ipData.longitude, ipData.city);
 	});
 	getIP.catch(function(err) {
 		alert('IPinfo: ' + JSON.stringify(err));
@@ -249,10 +255,15 @@ $(document).ready(function() {
 		getGeoLocation = navigator.geolocation.getCurrentPosition(function(pos) {
 			var lat = pos.coords.latitude;
 			var lon = pos.coords.longitude;
-			// Weather API request
-			requestWeather(lat, lon);
-			// Forecast API request
-			requestForecast(lat, lon);
+			// Need to get city name, forecast.io doesn't provide one
+			var getIP = $.getJSON('https://freegeoip.net/json/');
+			getIP.then(function(ipData) {
+				// Weather and Forecast API request
+				requestWeatherAndForecast(apiKeys[0], lat, lon, ipData.city);
+			});
+			getIP.catch(function(err) {
+				alert('IPinfo: ' + JSON.stringify(err));
+			});
 		}, 
 		function(err) {
 			requestByIp();
