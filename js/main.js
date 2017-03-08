@@ -247,7 +247,7 @@ function requestWeatherAndForecast(apiKey, lat, lon, city) {
 		displayForecast(data);
 	});
 	getWeatherInfo.catch(function(err) {
-		alert('WeatherInfo: ' + JSON.stringify(err));
+		console.log('WeatherInfo: ' + JSON.stringify(err));
 	});
 }
 // Try to retrieve position by ip address
@@ -260,7 +260,7 @@ function requestByIp() {
 		requestWeatherAndForecast(apiKeys[0], ipData.latitude, ipData.longitude, ipData.city);
 	});
 	getIP.catch(function(err) {
-		alert('IPinfo: ' + JSON.stringify(err));
+		console.log('IPinfo: ' + JSON.stringify(err));
 	});
 }
 // ========== API requests ==========
@@ -281,7 +281,7 @@ $(document).ready(function() {
 				requestWeatherAndForecast(apiKeys[0], lat, lon, ipData.city);
 			});
 			getIP.catch(function(err) {
-				alert('IPinfo: ' + JSON.stringify(err));
+				console.log('IPinfo: ' + JSON.stringify(err));
 			});
 		}, 
 		function(err) {
