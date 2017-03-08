@@ -267,6 +267,9 @@ function requestByIp() {
 
 
 $(document).ready(function() {
+	// Preload weather by ip API before navigator.geolocation
+	requestByIp();
+
 	if (navigator.geolocation) {
 		getGeoLocation = navigator.geolocation.getCurrentPosition(function(pos) {
 			var lat = pos.coords.latitude;
@@ -282,10 +285,8 @@ $(document).ready(function() {
 			});
 		}, 
 		function(err) {
-			requestByIp();
+			console.log('NavigatorGeolocation: ' + JSON.stringify(err));
 		});
-	} else {
-		requestByIp();
 	}
 
 	// Imperaial/metric switch logics
